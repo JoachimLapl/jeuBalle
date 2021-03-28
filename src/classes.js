@@ -22,13 +22,30 @@ class Hero {
     }
     get collides() {
         var col = { up: false, down: false, left: false, right: false }
+        var hL = this.x, hR = hL + this.width, hT = this.y, hB = hT + this.height;
+        var affX = x => (x - this.x) * this.speed.y / this.speed.x + this.y, affY = y => (y - this.y) * this.speed.x / this.speed.y + this.x
         Block.All.forEach(block => {
-            if (block.x<this.x && block.x+block.width>this.x) col.left = block;
-            if (block.x<this.x+this.width && block.x+block.width>this.x+this.width) col.right = block;
-            if (block.y<this.y && block.y+block.height>this.y) col.up = block;
-            if (block.y<this.y+this.height && block.y+block.height>this.y+this.height) col.down = block;
+            var bL = block.x, bR = bL + block.width, bT = block.y, bB = bT + block.height;
+            if (bT < hB && bB > hT) {
+                if (bL < hL && bR > hL) col.left = block;
+                if (bL < hR && bR > hR) col.right = block;
+            }
+            if (bL < hR && bR > hL) {
+                if (bT < hT && bB > hT) col.up = block;
+                if (bT < hB && bB > hB) col.down = block;
+            }
         })
         return col
+    }
+    get onBlock() {
+        // var col = { up: false, down: false, left: false, right: false }
+        var hL = this.x, hR = hL + this.width, hB = this.y + this.height;
+        for (let b of Block.All) {
+            var bL = b.x, bR = bL + b.width, bT = b.y;
+            if (bL < hR && bR > hL && Math.abs(bT - hB) < 3) return true
+
+        }
+        return false
     }
 }
 class Block {
