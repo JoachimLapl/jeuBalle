@@ -18,7 +18,17 @@ class Hero {
             x: 0,
             y: 1
         }
-        this.frictionIndex = .999
+        this.frictionIndex = .99
+    }
+    get collides() {
+        var col = { up: false, down: false, left: false, right: false }
+        Block.All.forEach(block => {
+            if (block.x<this.x && block.x+block.width>this.x) col.left = block;
+            if (block.x<this.x+this.width && block.x+block.width>this.x+this.width) col.right = block;
+            if (block.y<this.y && block.y+block.height>this.y) col.up = block;
+            if (block.y<this.y+this.height && block.y+block.height>this.y+this.height) col.down = block;
+        })
+        return col
     }
 }
 class Block {
