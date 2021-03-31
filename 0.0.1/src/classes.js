@@ -45,8 +45,8 @@ class Hero {
             var axT = this.affx, axB = line.affx;
             // var coef = norme(this.speed) / norme(line.pushVector)
             var coefX = this.speed.x / line.pushVector.x, coefY = this.speed.y / line.pushVector.y;
-            coefX = coefX ? coefX : 0
-            coefY = coefY ? coefY : 0
+            coefX = isFinite(coefX) ? coefX : 0
+            coefY = isFinite(coefY) ? coefY : 0
             var v = vectorChooser(line.pushVector, this.speed);
             if (isFinite(axT.a) && isFinite(axB.a)) {
                 console.log(axT, axB)
@@ -54,6 +54,7 @@ class Hero {
                 if (r <= this.r && x > line.x && x < line.x + line.width) {
                     console.log('hello')
                     this.speed.x += -v.x * coefX * 1.5; this.speed.y += -v.y * coefY * 1.9;
+                    console.log(v, coefX, -v.x * coefX * 1.5)
                 }
             } else {
                 var ayT = this.affy, ayB = line.affy;

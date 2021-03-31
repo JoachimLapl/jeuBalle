@@ -1,6 +1,6 @@
 var gamePlay = true;
 (gameInterval = () => {
-    var collides = hero.collides, onBlock = hero.onBlock, onBlockLeft = hero.goingIntoBlockLeft, onBlockRight = hero.goingIntoBlockRight;
+    var collides = hero.collides, onBlock = hero.onBlock, onBlockLeft = hero.goingIntoBlockLeft, onBlockRight = hero.goingIntoBlockRight/*, onBlockTop = hero.goingIntoBlockTop*/;
     if (!onBlockRight && keyIsDown['ArrowRight']) hero.speed.x = hero.speed.x > 5 ? hero.speed.x : hero.speed.x > 4 ? 5 : (hero.speed.x + .5);
     if (!onBlockLeft && keyIsDown['ArrowLeft']) hero.speed.x = hero.speed.x < -5 ? hero.speed.x : hero.speed.x < -4 ? -5 : (hero.speed.x - .5);
     var jumped = false;
@@ -11,6 +11,9 @@ var gamePlay = true;
         hero.speed.y *= -.9;
         console.log(hero.speed.y, hero.speed.y < .01)
         if (Math.abs(hero.speed.y) < 1) hero.speed.y = hero.speed.y ** 2 * (hero.speed.y < 0 ? -1 : 1)
+    }
+    if (collides.up) {
+        hero.speed.y *= -.9;
     }
     if (collides.left) {
         hero.x = collides.left.x + collides.left.width;

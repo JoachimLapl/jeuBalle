@@ -39,12 +39,21 @@ class Hero {
                 // if (bT < hB && bB > hB) col.down = block;
             }
         })
+        Plateform.All.forEach(plateform => {
+            var pL = plateform.x, pR = pL + plateform.width, pT = plateform.y;
+            if (pL < hR && pR > hL) {
+                if (pT > hB && pT < hB + this.speed.y) col.down = plateform;
+                // if (bT < hT && bB > hT) col.up = block;
+                // if (bT < hB && bB > hB) col.down = block;
+            }
+        })
         return col
     }
     get onBlock() {
         // var col = { up: false, down: false, left: false, right: false }
         var hL = this.x, hR = hL + this.width, hB = this.y + this.height;
-        for (let b of Block.All) {
+        console.log([...Block.All, ...Plateform.All])
+        for (let b of [...Block.All, ...Plateform.All]) {
             var bL = b.x, bR = bL + b.width, bT = b.y;
             if (bL < hR && bR > hL && Math.abs(bT - hB) < Math.abs(this.speed.y + .1)) return true
 
@@ -69,11 +78,29 @@ class Hero {
         }
         return false
     }
+    get goingIntoBlockTop() {
+        var hL = this.x, hR = hL + this.width, hT = this.y;
+        for (let b of Block.All) {
+            var bL = b.x, bR = bL + b.width, bB = b.y + b.height;
+            if (bL < hR && bR > hL && Math.abs(bB - hT) < Math.abs(this.speed.x + 1)) return true
+
+        }
+        return false
+    }
 }
 class Block {
     static All = []
     constructor(color, height, width, x, y) {
         Block.All.push(this)
+        svg.premierPlan.insertAdjacentHTML('beforeend', `<rect x=${this.x = x} y=${this.y = y} height=${this.height = height} width=${this.width = width} style="fill:${this.color = color};" newRect ></rect>`)
+        this.element = $('[newRect]')
+        this.element.removeAttribute('newrect')
+    }
+}
+class Plateform{
+    static All = []
+    constructor(color, height, width, x, y) {
+        Plateform.All.push(this)
         svg.premierPlan.insertAdjacentHTML('beforeend', `<rect x=${this.x = x} y=${this.y = y} height=${this.height = height} width=${this.width = width} style="fill:${this.color = color};" newRect ></rect>`)
         this.element = $('[newRect]')
         this.element.removeAttribute('newrect')
