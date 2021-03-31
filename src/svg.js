@@ -5,3 +5,5 @@ var center, rect;
     rect = svg.getBoundingClientRect()
     center = { x: rect.width / 2, y: rect.height / 2 }
 })()
+gravity = {x: 0, y: .1}
+wind = {x:0, y: 0}
