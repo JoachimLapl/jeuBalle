@@ -1,8 +1,11 @@
 var hero = new Hero('images/ball.png');
-var stopper = new Block('green', 10, rect.width + 100, -100, rect.height - 10);
-var block2 = new Block('red', 50, 50, rect.width - 50, rect.height - 60);
-var block3 = new Block('red', rect.height, 10, -110, 0);
-var block4 = new Block('red', 20, 50, rect.width + 51, rect.height - 100);
-var plat = new Plateform('#ff0', 20, 50, 150, rect.height - 100);
-var block = new Block('#00f', 20, 50, 200, rect.height - 100);
+// var enemy = new Enemy('images/skull.png');
+var stopper = new Plateform('green', -100, rect.height - 10, 10, rect.width + 100);
+var block2 = new Block('red', rect.width - 50, rect.height - 60, 50, 50);
+var block3 = new Block('red', -110, 0, rect.height, 10);
+var block4 = new Block('red', rect.width + 51, rect.height - 100, 120, 100);
+var plat = new Plateform('#ff0', 150, rect.height - 100, 2, 50);
+var block = new Block('#00f', 200, rect.height - 100, 2, 50);
+var prop = new Propeller('#fd0', 300, rect.height-100, 50, -1)
+var prop1 = new Propeller('#fa0', 300, rect.height-100, 100, .5)
 const pi = Math.PI
