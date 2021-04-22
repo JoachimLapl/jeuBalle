@@ -11,16 +11,84 @@
             margin: 0;
             background: #000;
         }
+
+        .meterbars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+
+        .meterbars>* {
+            display: flex;
+        }
+
+        .meterbars>*>*:last-child {
+            height: 10px;
+            width: 100px;
+            background: #fff;
+            box-shadow: inset 0 0 6px;
+        }
+
+        .meterbars>*>*:last-child>* {
+            height: 10px;
+            max-width: 100;
+            box-shadow: inset 0 0 6px;
+        }
+
+        [symbol] {
+            height: 10px;
+            font-size: 10px;
+            box-shadow: none;
+            color: #fff;
+            /* animation: woop 1s; */
+        }
+
+@keyframes woop {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wap {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
     </style>
 </head>
 
 <body>
     <svg>
+        <path
+           style="fill:#73fff8;fill-opacity:1;stroke:none;stroke-width:0.13820955px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m -273.85195,40.540408 -60.2302,18.339001 18.65613,13.523346 -64.85511,64.855105 52.86111,20.54787 -82.85771,52.78363 149.42937,-59.40608 -72.51467,-27.22026 37.43022,-37.430228 17.53642,12.711771 z"
+           id="path826"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccccccccc" />
         <g premierPlan></g>
         <g deuxiemePlan></g>
     </svg>
+    <div class="meterbars"></div>
     <script src="src/game.js"></script>
     <script src="src/svg.js"></script>
+    <script src="src/userPannels.js"></script>
     <script src="src/classes.js"></script>
     <script src="src/event.js"></script>
     <script src="init.js"></script>

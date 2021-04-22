@@ -1,5 +1,8 @@
 class Hero {
     constructor(href, x = 0, y = 0, height = 50, width = 50) {
+        this.r = (height + width) / 4;
+        this.lives = new MeterBar('#f00', heartSVGelement, 100, 132.45)
+        this.power = new MeterBar('#0af', powerSVGelement, 100, 169)
         svg.premierPlan.insertAdjacentHTML('beforeend', `<image href=${href} newImage height=${this.height = height} width=${this.width = width} x=${this.x = x} y=${this.y = y} />`)
         // svg.premierPlan.insertAdjacentHTML('beforeend', `<rect style="stroke:green; fill:#0000" newRect height=${height} width=${width} x=${x} y=${y} ></rect>`)
         this.element = $('[newImage]');
@@ -118,8 +121,8 @@ class Enemy {
         }
         this.frictionIndex = .99
     }
-    follow(e){
-        if (Math.hypot(this.x-e.x,this.y-e.y)<500){
+    follow(e) {
+        if (Math.hypot(this.x - e.x, this.y - e.y) < 500) {
 
         }
     }
@@ -131,6 +134,19 @@ class Block {
         svg.premierPlan.insertAdjacentHTML('beforeend', `<rect x=${this.x = x} y=${this.y = y} height=${this.height = height} width=${this.width = width} style="fill:${this.color = color};" newRect ></rect>`)
         this.element = $('[newRect]')
         this.element.removeAttribute('newrect')
+    }
+}
+class CircleBlock {
+    static All = []
+    constructor(color, x, y, r) {
+        CircleBlock.All.push(this)
+        svg.premierPlan.insertAdjacentHTML('beforeend', `<circle cx=${this.x = x} cy=${this.y = y} r=${this.r = r} style="fill:${this.color = color};" newCirc ></rect>`)
+        this.element = $('[newCirc]')
+        this.element.removeAttribute('newcirc')
+    }
+    f(h) {
+        var x = h.x - this.x + h.r, y = h.y - this.y + h.r, v = Math.hypot(x, y), c = (this.r + h.r < v) ? 0 : Math.hypot(h.speed.x, h.speed.y);
+        return { x: x / v * c * (Math.sign(x) === Math.sign(hero.speed.x) ? 1 : 1.5), y: y / v * c * (Math.sign(y) === Math.sign(hero.speed.y) ? 1 : 1.5) }
     }
 }
 class Plateform {
@@ -150,9 +166,40 @@ class Propeller {
         this.element = $('[newCirc]')
         this.element.removeAttribute('newcirc')
         this.intensity = i;
-        this.f = (p,r) => {
-            var x = p.x - this.x+r, y = p.y - this.y+r, a = (this.r+r) ** 2 - x ** 2 - y ** 2, c = a < 0 ? 0 : a ** .5 / this.r * this.intensity, v = Math.hypot(x, y);
-            return { x: x / v * c, y: y / v * c }
-        }
     }
-} 
+    f(p, r) {
+        var x = p.x - this.x + r, y = p.y - this.y + r, a = (this.r + r) ** 2 - x ** 2 - y ** 2, c = a < 0 ? 0 : a ** .5 / this.r * this.intensity, v = Math.hypot(x, y);
+        return { x: x / v * c, y: y / v * c }
+    }
+}
+class MeterBar {
+    constructor(color, symbol, percent, height = 10) {
+        meterbars.insert(this.wrapper = document.createElement('div'));
+        this.wrapper.insert(`<span symbol newSymbol style="zoom:${1e3 / height}%;">${this.symbol = symbol+''}</span>&nbsp;&nbsp;&nbsp;`)
+        this.wrapper.insert(this.wrap = document.createElement('div'))
+        this.wrap.insert(this.meter = document.createElement('div'));
+        this.meter.style.background = this.color = color;
+        this.meter.style.width = (this.value = percent > 100 ? 100 : percent < 0 ? 0 : percent) + 'px';
+        (this.symbolElement = $('[newSymbol]')).removeAttribute('newsymbol');
+        this.symbolElement.grow = () => {
+            this.symbolElement.style.animation = 'woop 1s';
+            setTimeout(() => this.symbolElement.style.animation = 'none', 1000)
+        }
+        this.symbolElement.shrink = () => {
+            this.symbolElement.style.animation = 'wap 1s';
+            setTimeout(() => this.symbolElement.style.animation = 'none', 1000)
+        }
+        var that = this;
+        this.props = {
+            set value(v) {
+                Math.abs(v) > 5 && (v < that.value && !that.symbolElement.shrink() || v > that.value && that.symbolElement.grow())
+                for (let f in that.onattain)
+                    Math.abs(that.value - f) + Math.abs(that.value - f + v) === Math.abs(v) && that.onattain[f]();
+                that.meter.style.width = (that.value = v > 100 ? 100 : v < 0 ? 0 : v) + 'px';
+            }
+        }
+        this.gain = v => this.props.value = this.value + v;
+        this.loose = v => this.props.value = this.value - v;
+        this.onattain = (n, callback) => (this.flags = this.flags ?? [])[n] = callback;
+    }
+}
