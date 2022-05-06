@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        html,
+        body,
+        svg {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        line {
+            /* stroke: #fff; */
+            stroke-width: .1;
+        }
+    </style>
+</head>
+
+<body>
+    <svg viewBox="-1 -1 2 2">
+        <defs>
+            <linearGradient id="Gradient1">
+              <stop stop-color="#fff0" offset="0"/>
+              <stop stop-color="#ffff" offset=".5"/>
+              <stop stop-color="#fff0" offset="1"/>
+            </linearGradient>
+        </defs>
+    </svg>
+    <script>
+        const svg = document.querySelector('svg');
+        for (let i = 0; i < 100; i++) {
+            const a = Math.random() * 2 * Math.PI;
+            svg.insertAdjacentHTML('beforeend', `<line x2=${Math.cos(a)} y2=${Math.sin(a)} stroke="url(Gradient1)" />`)
+        }
+    </script>
+</body>
+
+</html>
